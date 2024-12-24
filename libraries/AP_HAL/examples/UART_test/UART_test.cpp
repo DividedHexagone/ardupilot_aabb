@@ -55,7 +55,7 @@ void loop(void)
     test_uart(hal.serial(1), "SERIAL1");
     test_uart(hal.serial(2), "SERIAL2");
     test_uart(hal.serial(3), "SERIAL3");
-    test_uart(hal.serial(4), "SERIAL4");
+    test_uart(hal.serial(4), "SERIAL4"); //DVHX
 
     // also do a raw printf() on some platforms, which prints to the
     // debug console

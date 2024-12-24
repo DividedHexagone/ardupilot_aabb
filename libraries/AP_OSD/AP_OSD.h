@@ -255,6 +255,9 @@ private:
     AP_OSD_Setting batt_bar{true, 1, 1};
     AP_OSD_Setting arming{true, 1, 1};
 
+    AP_OSD_Setting aabb_min{true, 0, 0}; //DVHX
+    AP_OSD_Setting aabb_max{true, 24, 24}; //DVHX
+
 #if HAL_WITH_MSP_DISPLAYPORT
     // Per screen HD resolution options (currently supported only by DisplayPort)
     AP_Int8 txt_resolution;
@@ -284,6 +287,8 @@ private:
     void draw_home(uint8_t x, uint8_t y);
     void draw_throttle(uint8_t x, uint8_t y);
     void draw_heading(uint8_t x, uint8_t y);
+    void draw_aabb(uint8_t sx, uint8_t sy, uint8_t ex, uint8_t ey); //DVHX
+
 #if AP_RPM_ENABLED
     void draw_rrpm(uint8_t x, uint8_t y);
 #endif

@@ -857,6 +857,38 @@ const AP_Param::GroupInfo AP_OSD_Screen::var_info[] = {
     // @Description: Vertical position on screen
     // @Range: 0 21
     AP_SUBGROUPINFO(arming, "ARMING", 51, AP_OSD_Screen, AP_OSD_Setting),
+
+    // @Param: AABBMIN_EN
+    // @DisplayName: AABBMIN_EN
+    // @Description: Displays arming status (MSP OSD only)
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: AABBMIN_X
+    // @DisplayName: AABBMIN_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: AABBMIN_Y
+    // @DisplayName: AABBMIN_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
+    AP_SUBGROUPINFO(aabb_min, "AABBMIN", 52, AP_OSD_Screen, AP_OSD_Setting), //DVHX
+
+    // @Param: AABBMAX_EN
+    // @DisplayName: AABBMAX_EN
+    // @Description: Displays arming status (MSP OSD only)
+    // @Values: 0:Disabled,1:Enabled
+
+    // @Param: AABBMAX_X
+    // @DisplayName: AABBMAX_X
+    // @Description: Horizontal position on screen
+    // @Range: 0 59
+
+    // @Param: AABBMAX_Y
+    // @DisplayName: AABBMAX_Y
+    // @Description: Vertical position on screen
+    // @Range: 0 21
+    AP_SUBGROUPINFO(aabb_max, "AABBMAX", 53, AP_OSD_Screen, AP_OSD_Setting), //DVHX
 #endif //HAL_MSP_ENABLED
 
 #if HAL_PLUSCODE_ENABLE
@@ -1806,6 +1838,23 @@ void AP_OSD_Screen::draw_heading(uint8_t x, uint8_t y)
     uint16_t yaw = ahrs.yaw_sensor / 100;
     backend->write(x, y, false, "%3d%c", yaw, SYMBOL(SYM_DEGR));
 }
+//DVHX
+void AP_OSD_Screen::draw_aabb(uint8_t sx, uint8_t sy, uint8_t ex, uint8_t ey)
+{
+    for(uint8_t x = sx; x < ex; ++x)
+    {
+        bool isSide = x == sx || x == ex-1;
+        for(uint8_t y = sy; y < sy; ++y)
+        {
+            bool isTopDown = y == sy || y == sy-1;
+
+            if(isSide || isTopDown)
+            {
+                backend->write(x, y, '#');
+            }
+        }
+    }
+}
 
 #if AP_RPM_ENABLED
 void AP_OSD_Screen::draw_rrpm(uint8_t x, uint8_t y)
@@ -2649,6 +2698,8 @@ void AP_OSD_Screen::draw(void)
     DRAW_SETTING(rc_active_antenna);
     DRAW_SETTING(rc_lq);
 #endif
+
+    draw_aabb(aabb_min.xpos, aabb_min.ypos, aabb_max.xpos, aabb_max.ypos); //DVHX avoiding macro DRAW_SETTING due diffrerent input arguments
 }
 #endif
 #endif // OSD_ENABLED
